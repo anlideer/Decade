@@ -17,22 +17,35 @@ public class GM : MonoBehaviour {
                 map[i, j] = 0;
         foreach(GameObject house in Houses)
         {
-            int x = (int)(house.transform.position.x - zeroZero.x);
-            int y = (int)(zeroZero.y - house.transform.position.y);
-            if (x <= 0 || y <= 0)
-                Debug.Log("Error occurs in house position.");
+            Vector2Int gridPos = PosToGrid(house.transform.position);
+            if (gridPos == new Vector2Int(-1, -1))
+                Debug.Log("Error occurs in house pos transfering");
             else
             {
                 // 3 * 3
-                for (int i = x - 1; i <= x + 1; i++)
-                    for (int j = y - 1; j <= y + 1; j++)
+                for (int i = gridPos.x - 1; i <= gridPos.x + 1; i++)
+                    for (int j = gridPos.y - 1; j <= gridPos.y + 1; j++)
                         map[i, j] = 4;
             }
         }
+        
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
+
+    public static Vector2Int PosToGrid(Vector3 pos)
+    {
+        int x = (int)(pos.x - zeroZero.x);
+        int y = (int)(zeroZero.y - pos.y);
+        if (x < 0 || y < 0)
+        {
+            Debug.Log("Error occurs in finding grid coordinate");
+            return new Vector2Int(-1, -1);
+        }
+        return new Vector2Int(x, y);
+    }
+
 }
