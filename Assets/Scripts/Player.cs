@@ -1,17 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour {
 
     public float colddown = 0.1f;
+    //public float offset = 10f;
     public float currentTime;
     public Vector2Int[,] next = new Vector2Int[GM.width, GM.height];
     public int status;  // 0 - static 1 - get fruit 
     GameObject treeChosen = null;
     Animator anim;
     Vector2Int sta, des;
-    
+    public GameObject info;
+    //public Camera cam;
     
 
 	// Use this for initialization
@@ -42,6 +45,7 @@ public class Player : MonoBehaviour {
         {
             GetFruit(treeChosen);
         }
+
     }
 
     private void PlayerMove(int direction)  // direction = 0 - left, direction = 1 - right, direction = 2 - up, direction = 3 - down  move 1 grid
@@ -186,4 +190,28 @@ public class Player : MonoBehaviour {
             Moving(GM.PosToGrid(transform.position));
         }
     }
+
+    public void ShowInfo()
+    {
+        if (GM.infoOpen == false)
+        {
+            GM.infoOpen = true;
+            /*
+            Vector3 tmp = new Vector3(0, 0, 0);
+            if (transform.position.x > cam.transform.position.x)
+                tmp.x = -1 * offset;
+            else
+                tmp.x = offset;
+            if (transform.position.y > cam.transform.position.y)
+                tmp.y = -1 * offset;
+            else
+                tmp.y = offset;
+            */
+
+            // TODO: adjust contents of text in info
+            info.SetActive(true);
+        }
+    }
+
+
 }

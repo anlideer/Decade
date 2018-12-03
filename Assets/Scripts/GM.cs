@@ -8,11 +8,16 @@ public class GM : MonoBehaviour {
     public static Vector2 zeroZero = new Vector2(-53.8f, 24f);  
     public static int[,] map = new int [width, height]; // 0 - grass, 1 - tree, 2 - wolf, 3 - sheep, 4 - house, 5 - others
     public static float timeFly = 15f;  // how many seconds means a year
+    public LayerMask mask;
+    public static bool infoOpen;
+    public GameObject info;
+
 
     public GameObject[] Houses;
 
 	// Use this for initialization
 	void Start () {
+        infoOpen = false;
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++)
                 map[i, j] = 0;
@@ -34,7 +39,10 @@ public class GM : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        if (Input.GetMouseButtonDown(0))
+        {
+            OpenInfo();
+        }
 	}
 
     public static Vector2Int PosToGrid(Vector3 pos)
@@ -49,4 +57,25 @@ public class GM : MonoBehaviour {
         return new Vector2Int(x, y);
     }
 
+    // when we click the character, open the info window of the character.
+    private void OpenInfo()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, mask);
+        if (hit.collider)
+        {
+            if (hit.collider.gameObject.tag == "Player")
+            {
+                hit.collider.gameObject.GetComponent<Player>().ShowInfo();
+            }
+        }
+    }
+
+    public void closeInfo()
+    {
+        if (infoOpen == true)
+        {
+            infoOpen = false;
+            info.SetActive(false);
+        }
+    }
 }
