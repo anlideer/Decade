@@ -4,18 +4,29 @@ using UnityEngine;
 using System;
 
 public class TreeSpawn : MonoBehaviour {
+    public int number = 7;  // how many trees should be spawned
 
     public GameObject tree;
-    GameObject[] trees;
+    UnityEngine.Object obj;
+    public static string[] trees = new string[7];
+    public static bool []treeStatus = new bool[7];
 
-    public int number = 7;  // how many trees should be spawned
 
 	// Use this for initialization
 	void Start () {
         for (int i = 0; i < number; i++)
         {
             spawn();
+            obj.name = "Tree" + i.ToString();
+            trees[i] = obj.name;
+            treeStatus[i] = true;
         }
+        /*
+        foreach (string t in trees)
+        {
+            treeStatus.Add(t, true);
+        }
+        */
 	}
 	
 	// Update is called once per frame
@@ -40,7 +51,7 @@ public class TreeSpawn : MonoBehaviour {
                 for (int j = blockPos.y - 1; j <= blockPos.y; j++)
                     GM.map[i, j] = 1;
             Vector3 pos = new Vector3(GM.zeroZero.x + blockPos.x, GM.zeroZero.y - blockPos.y, 0);
-            Instantiate(tree, pos, transform.rotation);
+            obj = Instantiate(tree, pos, transform.rotation);
         }
     }
 }

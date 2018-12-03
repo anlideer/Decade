@@ -7,6 +7,7 @@ public class GM : MonoBehaviour {
     public static int height = 47;  // measure the map
     public static Vector2 zeroZero = new Vector2(-53.8f, 24f);  
     public static int[,] map = new int [width, height]; // 0 - grass, 1 - tree, 2 - wolf, 3 - sheep, 4 - house, 5 - others
+    public static float timeFly = 15f;  // how many seconds means a year
 
     public GameObject[] Houses;
 

@@ -7,10 +7,12 @@ public class Player : MonoBehaviour {
     public float colddown = 0.1f;
     public float currentTime;
     public Vector2Int[,] next = new Vector2Int[GM.width, GM.height];
-
+    public int status;  // 0 - static 1 - get fruit 
+    GameObject treeChosen = null;
     Animator anim;
-    public Vector2Int sta, des;
-
+    Vector2Int sta, des;
+    
+    
 
 	// Use this for initialization
 	void Start () {
@@ -19,15 +21,26 @@ public class Player : MonoBehaviour {
         for (int i = 0; i < GM.width; i++)
             for (int j = 0; j < GM.height; j++)
                 next[i, j] = new Vector2Int(-1, -1);
+        status = 0;
     }
 	
 	// Update is called once per frame
 	void Update () {
-        MoveTo(GM.PosToGrid(transform.position), new Vector2Int(0, 0));
-        if (currentTime + colddown < Time.time)
+        if (status == 1 && treeChosen == null)
         {
-            currentTime = Time.time;
-            Moving(GM.PosToGrid(transform.position));
+            for (int i = 0; i < 7; i++)
+            {
+                if (TreeSpawn.treeStatus[i] == true)
+                {
+                    treeChosen = GameObject.Find("Tree" + i.ToString());
+                    break;
+                }
+            }
+
+        }
+        else if (status == 1 && treeChosen != null)
+        {
+            GetFruit(treeChosen);
         }
     }
 
@@ -162,5 +175,15 @@ public class Player : MonoBehaviour {
             PlayerMove(2);
         else
             Debug.Log("Error occurs in moving");
+    }
+    
+    private void GetFruit(GameObject tree)
+    {
+        MoveTo(GM.PosToGrid(transform.position), GM.PosToGrid(new Vector3(tree.transform.position.x, tree.transform.position.y - 1, tree.transform.position.z)));
+        if (currentTime + colddown < Time.time)
+        {
+            currentTime = Time.time;
+            Moving(GM.PosToGrid(transform.position));
+        }
     }
 }
